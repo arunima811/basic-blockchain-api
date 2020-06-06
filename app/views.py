@@ -8,10 +8,10 @@ from app import app
 
 # The node with which our application interacts, there can be multiple
 # such nodes as well.
-CONNECTED_NODE_ADDRESS = "http://localhost:8000"
+CONNECTED_NODE_ADDRESS = "http://127.0.0.1:8000"
 
 posts = []
-
+fund_pool=5000
 
 def fetch_posts():
     """
@@ -38,9 +38,10 @@ def fetch_posts():
 def index():
     fetch_posts()
     return render_template('index.html',
-                           title='YourNet: Decentralized '
-                                 'content sharing',
+                           title='Trust and Donate: '
+                                 'Ease Migration',
                            posts=posts,
+			   fund_pool=fund_pool,
                            node_address=CONNECTED_NODE_ADDRESS,
                            readable_time=timestamp_to_string)
 
@@ -52,10 +53,19 @@ def submit_textarea():
     """
     post_content = request.form["content"]
     author = request.form["author"]
+	
+    post_int=int(post_content)
+    global fund_pool
+    if author=="Donate":
+        new_val = fund_pool+post_int
+    else :
+        new_val = fund_pool-post_int
+    fund_pool=new_val
 
     post_object = {
         'author': author,
         'content': post_content,
+	'value': new_val
     }
 
     # Submit a transaction

@@ -1,11 +1,12 @@
 from hashlib import sha256
 import json
 import time
-import sys
-import os
 
 from flask import Flask, request
 import requests
+
+import os
+
 from app import app
 
 
@@ -22,6 +23,8 @@ class Block:
         A function that return the hash of the block contents.
         """
         block_string = json.dumps(self.__dict__, sort_keys=True)
+        #print("for block string check for str")
+        #print(block_string[1])
         return sha256(block_string.encode()).hexdigest()
 
 
@@ -138,7 +141,9 @@ class Blockchain:
         return True
 
 
-# app = Flask(__name__)
+#app = Flask(__name__)
+port = int(os.getenv('PORT', 8000))
+
 
 # the node's copy of blockchain
 blockchain = Blockchain()
@@ -146,7 +151,7 @@ blockchain.create_genesis_block()
 
 # the address to other participating members of the network
 peers = set()
-port = int(os.getenv('PORT', 8000))
+
 
 # endpoint to submit a new transaction. This will be used by
 # our application to add new data (posts) to the blockchain
@@ -327,5 +332,5 @@ def announce_new_block(block):
                       headers=headers)
 
 # Uncomment this line if you want to specify the port number in the code
-
 app.run(host='0.0.0.0', port=port, debug=True)
+
