@@ -1,9 +1,11 @@
 from hashlib import sha256
 import json
 import time
+import sys
 
 from flask import Flask, request
 import requests
+from app import app
 
 
 class Block:
@@ -135,7 +137,7 @@ class Blockchain:
         return True
 
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
 # the node's copy of blockchain
 blockchain = Blockchain()
@@ -324,4 +326,5 @@ def announce_new_block(block):
                       headers=headers)
 
 # Uncomment this line if you want to specify the port number in the code
-#app.run(debug=True, port=8000)
+
+app.run(debug=True, host="0.0.0.0", port=8000)
