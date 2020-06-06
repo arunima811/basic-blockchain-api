@@ -2,6 +2,7 @@ from hashlib import sha256
 import json
 import time
 import sys
+import os
 
 from flask import Flask, request
 import requests
@@ -145,7 +146,7 @@ blockchain.create_genesis_block()
 
 # the address to other participating members of the network
 peers = set()
-
+port = int(os.getenv('PORT', 8000))
 
 # endpoint to submit a new transaction. This will be used by
 # our application to add new data (posts) to the blockchain
@@ -327,4 +328,4 @@ def announce_new_block(block):
 
 # Uncomment this line if you want to specify the port number in the code
 
-app.run(debug=True, host="0.0.0.0", port=8000)
+app.run(host='0.0.0.0', port=port, debug=True)
