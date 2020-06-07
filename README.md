@@ -1,95 +1,23 @@
-# python_blockchain_app
+# What's the problem?
+The pandemic of COVID-19 has brought a change in the frequency and amounts that we donate, resulting in the NGOs and care funds deployed by government or private organizations having a larger influx of money. We intend to tackle the problem of handling such large amounts of money and the corruption that comes with it. We plan to use the blockchain technology to track the funds being donated. It  incentivizes the organizations to use the money as expected ensuring transparency in transactions and in turn motivating public contributions. With the decentralized ledger, all the transactions can be verified making sure no alterations are made in the transactions till the end.
 
-A simple tutorial for developing a blockchain application from scratch in Python.
+# Demo video 
+https://youtu.be/pzh7Hu6ImyU
 
-## What is blockchain? How it is implemented? And how it works?
+# The architecture
 
-Please read the [step-by-step implementation tutorial](https://www.ibm.com/developerworks/cloud/library/cl-develop-blockchain-app-in-python/index.html) to get your answers :)
+<a href="http://fvcproductions.com"><img src="https://github.com/arunima811/basic-blockchain-api/blob/master/Architecture.png" alt="FVCproductions"></a>
 
-## Instructions to run
+# Solution description
 
-Clone the project,
+As mentioned, we deal with a problem statement of transparency in usage of donation funds received by NGOs and government funds that are collected for the betterment of our society. The ultimate solution to this problem can be the use of blockchain and it’s decentralized ledger to prevent tampering with the funds and achieve transparency where the donor can track and analyze the usage of their money. To develop such a revolutionary system, we started implementing the system on python. We have stored the transactions as json and these transactions are packed into blocks. For each transaction, a hash is computed which acts as digital fingerprint. Each block contains the hash of the previous block linked to it. If the data of any block is tampered, it’s has changes resulting in a change of the previous hash of the next block which in turn changes the previous has of next block. Thus, any change in the data of previous blocks would render the entire chain from the tampered block invalid, hence confirming transparency.  Although, after changing the data of a block, the rest of the chain can be re-computed with new hash values resulting in a different valid chain. To prevent this, a proof of work algorithm is implemented. A constraint that hash should have a certain number of leading zeroes is put and a variable number called nonce is computed to get the required hash. The difficulty of the algorithm depends on the number of zeroes used. More the number of zeroes, harder it is to find nonce hence more security. The difficulty level in our deployed system is 2. Now that all the parameters of a transaction has been computed, they are stored as unconfirmed transactions.
 
-```sh
-$ git clone https://github.com/satwikkansal/python_blockchain_app.git
-```
+# Project roadmap
+<a href="http://fvcproductions.com"><img src="https://github.com/arunima811/basic-blockchain-api/blob/master/roadmap.PNG" alt="FVCproductions"></a>
 
-Install the dependencies,
-
-```sh
-$ cd python_blockchain_app
+# Run
+> Clone the repository and run:
+```shell
 $ pip install -r requirements.txt
-```
-
-Start a blockchain node server,
-
-```sh
-# Windows users can follow this: https://flask.palletsprojects.com/en/1.1.x/cli/#application-discovery
-$ export FLASK_APP=node_server.py
-$ flask run --port 8000
-```
-
-One instance of our blockchain node is now up and running at port 8000.
-
-
-Run the application on a different terminal session,
-
-```sh
-$ python run_app.py
-```
-
-The application should be up and running at [http://localhost:5000](http://localhost:5000).
-
-Here are a few screenshots
-
-1. Posting some content
-
-![image.png](https://github.com/satwikkansal/python_blockchain_app/raw/master/screenshots/1.png)
-
-2. Requesting the node to mine
-
-![image.png](https://github.com/satwikkansal/python_blockchain_app/raw/master/screenshots/2.png)
-
-3. Resyncing with the chain for updated data
-
-![image.png](https://github.com/satwikkansal/python_blockchain_app/raw/master/screenshots/3.png)
-
-To play around by spinning off multiple custom nodes, use the `register_with/` endpoint to register a new node. 
-
-Here's a sample scenario that you might wanna try,
-
-```sh
-# Make sure you set the FLASK_APP environment variable to node_server.py before running these nodes
-# already running
-$ flask run --port 8000 &
-# spinning up new nodes
-$ flask run --port 8001 &
-$ flask run --port 8002 &
-```
-
-You can use the following cURL requests to register the nodes at port `8001` and `8002` with the already running `8000`.
-
-```sh
-curl -X POST \
-  http://127.0.0.1:8001/register_with \
-  -H 'Content-Type: application/json' \
-  -d '{"node_address": "http://127.0.0.1:8000"}'
-```
-
-```sh
-curl -X POST \
-  http://127.0.0.1:8002/register_with \
-  -H 'Content-Type: application/json' \
-  -d '{"node_address": "http://127.0.0.1:8000"}'
-```
-
-This will make the node at port 8000 aware of the nodes at port 8001 and 8002, and make the newer nodes sync the chain with the node 8000, so that they are able to actively participate in the mining process post registration.
-
-To update the node with which the frontend application syncs (default is localhost port 8000), change `CONNECTED_NODE_ADDRESS` field in the [views.py](/app/views.py) file.
-
-Once you do all this, you can run the application, create transactions (post messages via the web inteface), and once you mine the transactions, all the nodes in the network will update the chain. The chain of the nodes can also be inspected by inovking `/chain` endpoint using cURL.
-
-```sh
-$ curl -X GET http://localhost:8001/chain
-$ curl -X GET http://localhost:8002/chain
+$ python node_server.py
 ```
